@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Password Generator</title>
+<style>
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+main {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+input[type="number"] {
+  width: 50px;
+  height: 36px;
+  font-size: 18px;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="submit"] {
+  width: 100px;
+  height: 36px;
+  font-size: 18px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#password {
+  border: 1px solid #333;
+  padding: 10px;
+  background-color: #ccc;
+  text-align: center;
+  font-size: 18px;
+}
+
+button[type="button"] {
+  width: 100px;
+  height: 36px;
+  font-size: 18px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+</style>
+</head>
+<body>
+  <header>
+    <h1>Password Generator</h1>
+  </header>
+  <main>
+    <form>
+      <label for="length">Password Length:</label><br>
+      <input type="number" id="length" name="length"><br>
+      <input type="submit" value="Generate">
+      <button type="button" id="copy">Copy</button>
+    </form> 
+    <div id="password"></div>
+  </main>
+  <footer>
+    <p>Copyright 2021</p>
+  </footer>
+
+<script>
+ function generatePassword(event) {
+  // Prevent the form from submitting
+  event.preventDefault();
+
+  // Get the password length from the form
+  const length = document.getElementById("length").value;
+
+  // Initialize an empty password
+  let password = "";
+
+  // Define an array of special characters to include in the password
+  const specialCharacters = [
+    "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "]", "{", "}", "|", "\\", ":", ";", ",", ".", "/", "?", ">" , "<"
+  ];
+
+  // Generate a random password
+  for (let i = 0; i < length; i++) {
+    // Generate a random number between 0 and 1
+    let randomNumber = Math.random();
+
+    // Multiply the random number by the length of the character set
+    // and round down to the nearest integer
+    let index = Math.floor(randomNumber * 95);
+
+    // Convert the number to a character using the ASCII character set
+    let character = String.fromCharCode(index + 32);
+
+    // If the index is less than 26, use lowercase letters
+    if (index < 26) {
+      character = character.toLowerCase();
+    }
+    // If the index is between 26 and 52, use uppercase letters
+    else if (index < 52) {
+      character = character.toUpperCase();
+    }
+    // If the index is between 52 and 62, use special characters
+    else if (index < 62) {
+      character = specialCharacters[index - 52];
+    }
+
+    // Add the character to the password
+    password += character;
+  }
+
+  // Display the password to the user
+  document.getElementById("password").innerHTML = password;
+}
+
+// Add an event listener to the form to call the generatePassword function when the form is submitted
+const form = document.querySelector("form");
+form.addEventListener("submit", generatePassword);
+
+// Define a function to copy the password to the clipboard
+function copyPassword() {
+  // Get the password from the element that displays it
+  const password = document.getElementById("password").innerHTML;
+
+  // Copy the password to the clipboard
+  navigator.clipboard.writeText(password);
+}
+
+// Add an event listener to the "Copy" button to call the copyPassword function when the button is clicked
+const copyButton = document.getElementById("copy");
+copyButton.addEventListener("click", copyPassword);
+
+
+</script>
+</body>
+</html>
